@@ -72,8 +72,6 @@ void carregarImagem(const string& nomeArquivo, int**& imagem, int& linhas, int& 
         }
     }
 
-    cout << "Imagem carregada: " << linhas << " linhas, " << colunas << " colunas, valor maximo: " << maxValor << endl;
-
     arquivo.close();
 }
 
@@ -106,11 +104,23 @@ int main() {
 
                 // Carrega a nova imagem
                 carregarImagem(nomeArquivo, imagem, linhas, colunas);
-                cout << "Imagem carregada com sucesso!" << endl;
+                cout << "\nImagem carregada com sucesso!" << endl;
                 break;
 
             case 2:
-                cout << "Funcionalidade em desenvolvimento..." << endl;
+                if (imagem == nullptr) {
+                    cout << "\nNenhuma imagem carregada. Por favor, carregue uma imagem primeiro." << endl;
+                }else {
+                    // Exibe o menu de alterações da imagem
+                    cout << "\n====== Menu de Alteracoes da Imagem ======" << endl;
+                    cout << "[1] - Escurecer ou Clarear Imagem" << endl;
+                    cout << "[2] - Rotacionar Imagem" << endl;
+                    cout << "[3] - Negativar a Imagem" << endl;
+                    cout << "[4] - Binarizar Imagem" << endl;
+                    cout << "[5] - Iconizar Imagem" << endl;
+                    cout << "[0] - Voltar ao Menu Principal" << endl;
+                    cout << "===========================================" << endl;
+                }
                 break;
 
             case 0:
