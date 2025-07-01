@@ -72,6 +72,30 @@ void carregarImagem(const string& nomeArquivo, int**& imagem, int& linhas, int& 
     arquivo.close();
 }
 
+// Função para salvar a imagem PGM
+void salvarImagem(const string& nomeArquivo, int** imagem, int linhas, int colunas, int maxValor) {
+    ofstream arquivo(nomeArquivo);
+    if (!arquivo.is_open()) {
+        cout << "Erro ao abrir o arquivo para escrita: " << nomeArquivo << endl;
+        return;
+    }
+
+    // Escreve o cabeçalho do PGM
+    arquivo << "P2\n";
+    arquivo << colunas << " " << linhas << "\n";
+    arquivo << maxValor << "\n";
+
+    // Escreve os pixels da imagem
+    for (int i = 0; i < linhas; ++i) {
+        for (int j = 0; j < colunas; ++j) {
+            arquivo << imagem[i][j] << " ";
+        }
+        arquivo << "\n"; // Nova linha após cada linha de pixels
+    }
+
+    arquivo.close();
+}
+
 // Função para clarar ou escurecer a imagem
 void ajustarBrilho(int** imagem, int linhas, int colunas, int ajuste) {
     for (int i = 0; i < linhas; ++i) {
