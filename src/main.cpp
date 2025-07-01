@@ -72,11 +72,11 @@ void carregarImagem(const string& nomeArquivo, int**& imagem, int& linhas, int& 
     arquivo.close();
 }
 
-// Função para salvar a imagem PGM
-void salvarImagem(const string& nomeArquivo, int** imagem, int linhas, int colunas, int maxValor) {
-    ofstream arquivo(nomeArquivo);
+// Função para salvar uma imagem PGM (formato ASCII)
+void salvarImagem(int** imagem, int linhas, int colunas, int maxValor) {
+    ofstream arquivo("saida.pgm");
     if (!arquivo.is_open()) {
-        cout << "Erro ao abrir o arquivo para escrita: " << nomeArquivo << endl;
+        cout << "Erro ao abrir o arquivo para escrita: saida.pgm" << endl;
         return;
     }
 
@@ -113,8 +113,24 @@ int main() {
     int** imagem = nullptr;
     int linhas = 0, colunas = 0, maxValor = 0;
 
-    int nomes[100]; // Array para armazenar nomes de arquivos
-    int contadorImagens = 1; // Contador para gerar nomes únicos de arquivos
+    string nomes[100]; // Array para armazenar nomes de arquivos
+    int qtdNomes = 0; // Quantidade de nomes lidos
+    int contadorImagens = 0; // Contador para gerar nomes únicos de arquivos
+
+    // Lê os nomes dos arquivos do arquivo nomes.txt
+    ifstream arquivoNomes("nomes.txt");
+    // Verifica se o arquivo nomes.txt foi aberto corretamente
+    if (!arquivoNomes.is_open()) {
+        cout << "Erro ao abrir o arquivo de nomes: nomes.txt" << endl;
+        return 1;
+    }
+    // Lê os nomes dos arquivos do arquivo nomes.txt
+    for(int i = 0; i < 100; ++i) {
+        arquivoNomes >> nomes[i];
+        if (arquivoNomes.eof()) break; // Para se chegar ao final do arquivo
+        qtdNomes++;
+    }
+    arquivoNomes.close();
 
     int opcao = 1;
     while (opcao != 0) {
@@ -164,6 +180,7 @@ int main() {
                             int ajuste;
                             cout << "Digite o valor de ajuste de brilho (positivo para clarear, negativo para escurecer): ";
                             cin >> ajuste;
+
                             ajustarBrilho(imagem, linhas, colunas, ajuste);
                             cout << "Brilho ajustado com sucesso!" << endl;
                             break;
