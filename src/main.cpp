@@ -27,7 +27,7 @@ void liberarImagem(int** imagem, int linhas) {
 // Função para carregar uma imagem PGM (formato ASCII)
 // Lê o arquivo, ignora comentários, lê dimensões, valor máximo e pixels
 // Aloca dinamicamente a matriz imagem e preenche com os valores do arquivo
-void carregarImagem(const string& nomeArquivo, int**& imagem, int& linhas, int& colunas) {
+void carregarImagem(const string& nomeArquivo, int**& imagem, int& linhas, int& colunas, int& maxValor) {
     ifstream arquivo(nomeArquivo);
     if (!arquivo.is_open()) {
         cout << "Erro ao abrir o arquivo: " << nomeArquivo << endl;
@@ -60,7 +60,7 @@ void carregarImagem(const string& nomeArquivo, int**& imagem, int& linhas, int& 
         getline(arquivo, temp);
         arquivo >> temp;
     }
-    int maxValor = stoi(temp);
+    maxValor = stoi(temp);
 
     // Aloca a matriz imagem dinamicamente
     imagem = alocarImagem(linhas, colunas);
@@ -78,7 +78,7 @@ void carregarImagem(const string& nomeArquivo, int**& imagem, int& linhas, int& 
 int main() {
     string nomeArquivo;
     int** imagem = nullptr;
-    int linhas = 0, colunas = 0;
+    int linhas = 0, colunas = 0, maxValor = 0;
 
     int opcao = 1;
     while (opcao != 0) {
@@ -103,7 +103,7 @@ int main() {
                 }
 
                 // Carrega a nova imagem
-                carregarImagem(nomeArquivo, imagem, linhas, colunas);
+                carregarImagem(nomeArquivo, imagem, linhas, colunas, maxValor);
                 cout << "\nImagem carregada com sucesso!" << endl;
                 break;
 
