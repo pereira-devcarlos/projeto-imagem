@@ -6,17 +6,16 @@
 using namespace std;
 
 // Aloca dinamicamente uma matriz de inteiros (imagem)
-// Retorna um ponteiro para uma matriz de linhas x colunas
 int** alocarImagem(int linhas, int colunas) {
     int** imagem = new int*[linhas];
     for (int i = 0; i < linhas; ++i) {
         imagem[i] = new int[colunas];
     }
+    // Retorna um ponteiro para uma matriz de linhas x colunas
     return imagem;
 }
 
 // Libera a memória alocada para a matriz de inteiros (imagem)
-// Recebe o ponteiro da matriz e o número de linhas
 void liberarImagem(int** imagem, int linhas) {
     for (int i = 0; i < linhas; ++i) {
         delete[] imagem[i];
@@ -25,8 +24,6 @@ void liberarImagem(int** imagem, int linhas) {
 }
 
 // Função para carregar uma imagem PGM (formato ASCII)
-// Lê o arquivo, ignora comentários, lê dimensões, valor máximo e pixels
-// Aloca dinamicamente a matriz imagem e preenche com os valores do arquivo
 void carregarImagem(const string& nomeArquivo, int**& imagem, int& linhas, int& colunas, int& maxValor) {
     ifstream arquivo(nomeArquivo);
     if (!arquivo.is_open()) {
@@ -75,6 +72,18 @@ void carregarImagem(const string& nomeArquivo, int**& imagem, int& linhas, int& 
     arquivo.close();
 }
 
+// Função para clarar ou escurecer a imagem
+void ajustarBrilho(int** imagem, int linhas, int colunas, int ajuste) {
+    for (int i = 0; i < linhas; ++i) {
+        for (int j = 0; j < colunas; ++j) {
+            imagem[i][j] += ajuste;
+            // Garante que os valores estejam dentro do intervalo [0, maxValor]
+            if (imagem[i][j] < 0) imagem[i][j] = 0;
+            if (imagem[i][j] > 255) imagem[i][j] = 255; // Considerando maxValor como 255 para PGM
+        }
+    }
+}
+
 int main() {
     string nomeArquivo;
     int** imagem = nullptr;
@@ -120,6 +129,8 @@ int main() {
                     cout << "[5] - Iconizar Imagem" << endl;
                     cout << "[0] - Voltar ao Menu Principal" << endl;
                     cout << "===========================================" << endl;
+                    cout << "Escolha uma opcao: ";
+                    cin >> opcao;
                 }
                 break;
 
