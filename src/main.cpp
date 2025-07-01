@@ -38,20 +38,24 @@ void carregarImagem(const string& nomeArquivo, int**& imagem, int& linhas, int& 
         return;
     }
 
-    // Ignorar comentários
-    do {
-        getline(arquivo, linha);
-    } while (!linha.empty() && linha[0] == '#');
+    // Ignora comentários
+    string temp;
+    arquivo >> temp;
+    while (temp[0] == '#') {
+        getline(arquivo, temp);  // ignora a linha do comentário
+        arquivo >> temp;
+    }
 
-    // Ler dimensões
-    istringstream issDim(linha);
-    issDim >> colunas >> linhas;
+    // Primeira parte das dimensões
+    colunas = stoi(temp);
+    arquivo >> linhas;
 
-    // Ler valor máximo (e ignorar comentários antes)
-    do {
-        getline(arquivo, linha);
-    } while ((linha.empty() || linha[0] == '#') && !arquivo.eof());
-    int maxValor = stoi(linha);
+    arquivo >> temp;
+    while (temp[0] == '#') {
+        getline(arquivo, temp);
+        arquivo >> temp;
+    }
+    int maxValor = stoi(temp);
 
     // Alocar imagem dinamicamente
     imagem = alocarImagem(linhas, colunas);
