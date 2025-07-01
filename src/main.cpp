@@ -6,6 +6,7 @@
 using namespace std;
 
 // Aloca dinamicamente uma matriz de inteiros (imagem)
+// Retorna um ponteiro para uma matriz de linhas x colunas
 int** alocarImagem(int linhas, int colunas) {
     int** imagem = new int*[linhas];
     for (int i = 0; i < linhas; ++i) {
@@ -14,7 +15,8 @@ int** alocarImagem(int linhas, int colunas) {
     return imagem;
 }
 
-// Libera a memória da imagem
+// Libera a memória alocada para a matriz de inteiros (imagem)
+// Recebe o ponteiro da matriz e o número de linhas
 void liberarImagem(int** imagem, int linhas) {
     for (int i = 0; i < linhas; ++i) {
         delete[] imagem[i];
@@ -22,7 +24,9 @@ void liberarImagem(int** imagem, int linhas) {
     delete[] imagem;
 }
 
-// Função para carregar imagem PGM ASCII
+// Função para carregar uma imagem PGM (formato ASCII)
+// Lê o arquivo, ignora comentários, lê dimensões, valor máximo e pixels
+// Aloca dinamicamente a matriz imagem e preenche com os valores do arquivo
 void carregarImagem(const string& nomeArquivo, int**& imagem, int& linhas, int& colunas) {
     ifstream arquivo(nomeArquivo);
     if (!arquivo.is_open()) {
@@ -31,14 +35,14 @@ void carregarImagem(const string& nomeArquivo, int**& imagem, int& linhas, int& 
     }
 
     string linha;
-    // Ler "P2"
+    // Ler "P2" (identificador do formato PGM ASCII)
     getline(arquivo, linha);
     if (linha != "P2") {
         cout << "Formato PGM inválido (esperado P2)." << endl;
         return;
     }
 
-    // Ignora comentários
+    // Ignora comentários e lê as dimensões
     string temp;
     arquivo >> temp;
     while (temp[0] == '#') {
@@ -46,10 +50,11 @@ void carregarImagem(const string& nomeArquivo, int**& imagem, int& linhas, int& 
         arquivo >> temp;
     }
 
-    // Primeira parte das dimensões
+    // Lê o número de colunas e linhas
     colunas = stoi(temp);
     arquivo >> linhas;
 
+    // Ignora comentários e lê o valor máximo
     arquivo >> temp;
     while (temp[0] == '#') {
         getline(arquivo, temp);
@@ -57,10 +62,10 @@ void carregarImagem(const string& nomeArquivo, int**& imagem, int& linhas, int& 
     }
     int maxValor = stoi(temp);
 
-    // Alocar imagem dinamicamente
+    // Aloca a matriz imagem dinamicamente
     imagem = alocarImagem(linhas, colunas);
 
-    // Ler pixels
+    // Lê os pixels da imagem e armazena na matriz
     for (int i = 0; i < linhas; ++i) {
         for (int j = 0; j < colunas; ++j) {
             arquivo >> imagem[i][j];
@@ -93,12 +98,13 @@ int main() {
                 cout << "Digite o nome do arquivo: ";
                 cin >> nomeArquivo;
                 
-                // Liberar imagem anterior, se existir
+                // Libera a imagem anterior, se existir
                 if (imagem != nullptr) {
                     liberarImagem(imagem, linhas);
                     imagem = nullptr;
                 }
 
+                // Carrega a nova imagem
                 carregarImagem(nomeArquivo, imagem, linhas, colunas);
                 cout << "Imagem carregada com sucesso!" << endl;
                 break;
@@ -117,7 +123,7 @@ int main() {
         }
     }
 
-    // Libera a imagem no final do programa
+    // Libera a imagem no final do programa, se existir
     if (imagem != nullptr) {
         liberarImagem(imagem, linhas);
     }
