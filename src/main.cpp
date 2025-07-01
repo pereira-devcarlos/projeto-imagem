@@ -89,6 +89,9 @@ int main() {
     int** imagem = nullptr;
     int linhas = 0, colunas = 0, maxValor = 0;
 
+    int nomes[100]; // Array para armazenar nomes de arquivos
+    int contadorImagens = 1; // Contador para gerar nomes únicos de arquivos
+
     int opcao = 1;
     while (opcao != 0) {
         cout << "\n====== Menu de Opcoes ======" << endl;
@@ -131,6 +134,38 @@ int main() {
                     cout << "===========================================" << endl;
                     cout << "Escolha uma opcao: ";
                     cin >> opcao;
+
+                    switch (opcao) {
+                        case 1: {
+                            int ajuste;
+                            cout << "Digite o valor de ajuste de brilho (positivo para clarear, negativo para escurecer): ";
+                            cin >> ajuste;
+                            ajustarBrilho(imagem, linhas, colunas, ajuste);
+                            cout << "Brilho ajustado com sucesso!" << endl;
+                            break;
+                        }
+                        case 2:
+                            // Implementar rotacionar imagem
+                            cout << "Funcionalidade de rotacionar imagem ainda não implementada." << endl;
+                            break;
+                        case 3:
+                            // Implementar negativar imagem
+                            cout << "Funcionalidade de negativar imagem ainda não implementada." << endl;
+                            break;
+                        case 4:
+                            // Implementar binarizar imagem
+                            cout << "Funcionalidade de binarizar imagem ainda não implementada." << endl;
+                            break;
+                        case 5:
+                            // Implementar iconizar imagem
+                            cout << "Funcionalidade de iconizar imagem ainda não implementada." << endl;
+                            break;
+                        case 0:
+                            cout << "\nVoltando ao menu principal..." << endl;
+                            break;
+                        default:
+                            cout << "Opcao invalida. Tente novamente." << endl;
+                    }
                 }
                 break;
 
