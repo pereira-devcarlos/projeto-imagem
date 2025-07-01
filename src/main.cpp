@@ -1,40 +1,121 @@
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
 
 using namespace std;
 
-int main(){
-    typedef int Imagem[1024][1024];
+// Aloca dinamicamente uma matriz de inteiros (imagem)
+int** alocarImagem(int linhas, int colunas) {
+    int** imagem = new int*[linhas];
+    for (int i = 0; i < linhas; ++i) {
+        imagem[i] = new int[colunas];
+    }
+    return imagem;
+}
 
+// Libera a memória da imagem
+void liberarImagem(int** imagem, int linhas) {
+    for (int i = 0; i < linhas; ++i) {
+        delete[] imagem[i];
+    }
+    delete[] imagem;
+}
+
+// Função para carregar imagem PGM ASCII
+void carregarImagem(const string& nomeArquivo, int**& imagem, int& linhas, int& colunas) {
+    ifstream arquivo(nomeArquivo);
+    if (!arquivo.is_open()) {
+        cout << "Erro ao abrir o arquivo: " << nomeArquivo << endl;
+        return;
+    }
+
+    string linha;
+    // Ler "P2"
+    getline(arquivo, linha);
+    if (linha != "P2") {
+        cout << "Formato PGM inválido (esperado P2)." << endl;
+        return;
+    }
+
+    // Ignorar comentários
+    do {
+        getline(arquivo, linha);
+    } while (!linha.empty() && linha[0] == '#');
+
+    // Ler dimensões
+    istringstream issDim(linha);
+    issDim >> colunas >> linhas;
+
+    // Ler valor máximo (e ignorar comentários antes)
+    do {
+        getline(arquivo, linha);
+    } while ((linha.empty() || linha[0] == '#') && !arquivo.eof());
+    int maxValor = stoi(linha);
+
+    // Alocar imagem dinamicamente
+    imagem = alocarImagem(linhas, colunas);
+
+    // Ler pixels
+    for (int i = 0; i < linhas; ++i) {
+        for (int j = 0; j < colunas; ++j) {
+            arquivo >> imagem[i][j];
+        }
+    }
+
+    cout << "Imagem carregada: " << linhas << " linhas, " << colunas << " colunas, valor maximo: " << maxValor << endl;
+
+    arquivo.close();
+}
+
+int main() {
     string nomeArquivo;
+    int** imagem = nullptr;
+    int linhas = 0, colunas = 0;
 
-    int opcao=1;
-    while (opcao != 0){
-        cout << "====== Menu de Opcoes ======" << endl;
+    int opcao = 1;
+    while (opcao != 0) {
+        cout << "\n====== Menu de Opcoes ======" << endl;
         cout << "[1] - Carregar Imagem" << endl;
         cout << "[2] - Menu de Alteracoes da Imagem" << endl;
         cout << "[0] - Encerrar Programa" << endl;
-        cout << "============================" << endl;
+        cout << "=============================" << endl;
         cout << "Escolha uma opcao: ";
         cin >> opcao;
 
         switch (opcao) {
             case 1:
-                cout << "O formato do nome do arquivo deve ser: 'imagem.pgm'" << endl;
+                cout << "\nO formato do nome do arquivo deve ser: 'imagem.pgm'" << endl;
                 cout << "Digite o nome do arquivo: ";
                 cin >> nomeArquivo;
-                nomeArquivo += ".pgm";
-                cout << "Carregando imagem: " << nomeArquivo << endl;
+                
+                // Liberar imagem anterior, se existir
+                if (imagem != nullptr) {
+                    liberarImagem(imagem, linhas);
+                    imagem = nullptr;
+                }
+
+                carregarImagem(nomeArquivo, imagem, linhas, colunas);
+                cout << "Imagem carregada com sucesso!" << endl;
                 break;
+
             case 2:
-                // Menu de Alterações da Imagem
+                cout << "Funcionalidade em desenvolvimento..." << endl;
                 break;
+
             case 0:
                 cout << "Encerrando o programa..." << endl;
                 break;
+
             default:
                 cout << "Opcao invalida. Tente novamente." << endl;
                 break;
         }
+    }
+
+    // Libera a imagem no final do programa
+    if (imagem != nullptr) {
+        liberarImagem(imagem, linhas);
     }
 
     return 0;
