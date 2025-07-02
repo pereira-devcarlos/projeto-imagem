@@ -223,7 +223,37 @@ int main() {
                         }
                         case 2:
                             // Implementar rotacionar imagem
-                            cout << "Funcionalidade de rotacionar imagem ainda não implementada." << endl;
+                            cout << "======= Rotacionar Imagem =======" << endl;
+                            cout << "[1] - Rotacionar 90 graus a direita" << endl;
+                            cout << "[2] - Rotacionar 90 graus a esquerda" << endl;
+                            cout << "[3] - Espelhar horizontalmente" << endl;
+                            cout << "[4] - Espelhar verticalmente" << endl;
+                            cout << "[0] - Voltar ao Menu de Alteracoes" << endl;
+                            cout << "Escolha uma opcao: ";
+                            cin >> opcao;
+                            switch (opcao) {
+                                case 1:
+                                    // Implementar rotacionar 90 graus a direita
+                                    cout << "Funcionalidade de rotacionar 90 graus a direita ainda não implementada." << endl;
+                                    break;
+                                case 2:
+                                    // Implementar rotacionar 90 graus a esquerda
+                                    cout << "Funcionalidade de rotacionar 90 graus a esquerda ainda não implementada." << endl;
+                                    break;
+                                case 3:
+                                    // Implementar espelhar horizontalmente
+                                    cout << "Funcionalidade de espelhar horizontalmente ainda não implementada." << endl;
+                                    break;
+                                case 4:
+                                    // Implementar espelhar verticalmente
+                                    cout << "Funcionalidade de espelhar verticalmente ainda não implementada." << endl;
+                                    break;
+                                case 0:
+                                    cout << "\nVoltando ao menu de alteracoes..." << endl;
+                                    break;
+                                default:
+                                    cout << "Opcao invalida. Tente novamente." << endl;
+                            }
                             break;
                         case 3:
                             // Implementar negativar imagem
