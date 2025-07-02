@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <sstream>
 
 using namespace std;
 
@@ -293,24 +292,6 @@ int main() {
     int linhas = 0, colunas = 0, maxValor = 0;
     string registro = "nomes.txt"; // Arquivo para registrar nomes de imagens
 
-    string nomes[100]; // Array para armazenar nomes de arquivos
-    int qtdNomes = 0; // Quantidade de nomes lidos
-
-    // Lê os nomes dos arquivos do arquivo nomes.txt
-    ifstream arquivoNomes("nomes.txt");
-    // Verifica se o arquivo nomes.txt foi aberto corretamente
-    if (!arquivoNomes.is_open()) {
-        cout << "Erro ao abrir o arquivo de nomes: nomes.txt" << endl;
-        return 1;
-    }
-    // Lê os nomes dos arquivos do arquivo nomes.txt
-    for(int i = 0; i < 100; ++i) {
-        arquivoNomes >> nomes[i];
-        if (arquivoNomes.eof()) break; // Para se chegar ao final do arquivo
-        qtdNomes++;
-    }
-    arquivoNomes.close();
-
     int opcao = 1;
     while (opcao != 0) {
         cout << "\n========= Menu de Opcoes =========" << endl;
@@ -323,7 +304,7 @@ int main() {
 
         switch (opcao) {
             case 1:
-                cout << "\nO formato do nome do arquivo deve ser: 'imagem.pgm'" << endl;
+                cout << "\nO formato do nome do arquivo deve ser: 'exemplo.pgm'" << endl;
                 cout << "Digite o nome do arquivo: ";
                 cin >> nomeArquivo;
                 
@@ -364,7 +345,7 @@ int main() {
                             cin >> ajuste;
 
                             ajustarBrilho(imagem, linhas, colunas, ajuste);
-                            cout << "Brilho ajustado com sucesso!" << endl;
+                            cout << "\nBrilho ajustado com sucesso!" << endl;
 
                             // Salva a imagem ajustada
                             salvarImagem(imagem, linhas, colunas, maxValor, "saida", ".pgm", registro);
@@ -389,7 +370,7 @@ int main() {
                                 case 1:
                                     // Implementar rotacionar 90 graus a direita
                                     rotacionarDireita(imagem, linhas, colunas);
-                                    cout << "Imagem rotacionada 90 graus a direita!" << endl;
+                                    cout << "\nImagem rotacionada 90 graus a direita!" << endl;
 
                                     // Salva a imagem rotacionada
                                     salvarImagem(imagem, linhas, colunas, maxValor, "saida", ".pgm", registro);
@@ -400,7 +381,7 @@ int main() {
                                 case 2:
                                     // Implementar rotacionar 90 graus a esquerda
                                     rotacionarEsquerda(imagem, linhas, colunas);
-                                    cout << "Imagem rotacionada 90 graus a esquerda!" << endl;
+                                    cout << "\nImagem rotacionada 90 graus a esquerda!" << endl;
 
                                     // Salva a imagem rotacionada
                                     salvarImagem(imagem, linhas, colunas, maxValor, "saida", ".pgm", registro);
@@ -411,7 +392,7 @@ int main() {
                                 case 3:
                                     // Implementar espelhar horizontalmente
                                     espelharHorizontal(imagem, linhas, colunas);
-                                    cout << "Imagem espelhada horizontalmente!" << endl;
+                                    cout << "\nImagem espelhada horizontalmente!" << endl;
 
                                     // Salva a imagem espelhada
                                     salvarImagem(imagem, linhas, colunas, maxValor, "saida", ".pgm", registro);
@@ -422,7 +403,7 @@ int main() {
                                 case 4:
                                     // Implementar espelhar verticalmente
                                     espelharVertical(imagem, linhas, colunas);
-                                    cout << "Imagem espelhada verticalmente!" << endl;
+                                    cout << "\nImagem espelhada verticalmente!" << endl;
 
                                     // Salva a imagem espelhada
                                     salvarImagem(imagem, linhas, colunas, maxValor, "saida", ".pgm", registro);
@@ -434,7 +415,7 @@ int main() {
                                     cout << "\nVoltando ao menu principal..." << endl;
                                     break;
                                 default:
-                                    cout << "Opcao invalida. Tente novamente." << endl;
+                                    cout << "\nOpcao invalida. Tente novamente." << endl;
                             }
                             break;
                         case 3:
