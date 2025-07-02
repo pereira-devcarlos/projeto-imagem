@@ -198,6 +198,17 @@ void rotacionarEsquerda(int**& imagem, int& linhas, int& colunas) {
     colunas = temp;
 }
 
+// Função para espelhar horizontalmente a imagem
+void espelharHorizontal(int**& imagem, int linhas, int colunas) {
+    for (int i = 0; i < linhas; ++i) {
+        for (int j = 0; j < colunas / 2; ++j) {
+            int temp = imagem[i][j];
+            imagem[i][j] = imagem[i][colunas - 1 - j];
+            imagem[i][colunas - 1 - j] = temp;
+        }
+    }
+}
+
 int main() {
     string nomeArquivo;
     int** imagem = nullptr;
@@ -307,11 +318,25 @@ int main() {
                                     break;
                                 case 2:
                                     // Implementar rotacionar 90 graus a esquerda
-                                    cout << "Funcionalidade de rotacionar 90 graus a esquerda ainda não implementada." << endl;
+                                    rotacionarEsquerda(imagem, linhas, colunas);
+                                    cout << "Imagem rotacionada 90 graus a esquerda!" << endl;
+
+                                    // Salva a imagem rotacionada
+                                    salvarImagem(imagem, linhas, colunas, maxValor, "saida", ".pgm", registro);
+
+                                    // Carrega novamente a imagem para refletir as alterações
+                                    carregarImagem(nomeArquivo, imagem, linhas, colunas, maxValor);
                                     break;
                                 case 3:
                                     // Implementar espelhar horizontalmente
-                                    cout << "Funcionalidade de espelhar horizontalmente ainda não implementada." << endl;
+                                    espelharHorizontal(imagem, linhas, colunas);
+                                    cout << "Imagem espelhada horizontalmente!" << endl;
+
+                                    // Salva a imagem espelhada
+                                    salvarImagem(imagem, linhas, colunas, maxValor, "saida", ".pgm", registro);
+
+                                    // Carrega novamente a imagem para refletir as alterações
+                                    carregarImagem(nomeArquivo, imagem, linhas, colunas, maxValor);
                                     break;
                                 case 4:
                                     // Implementar espelhar verticalmente
