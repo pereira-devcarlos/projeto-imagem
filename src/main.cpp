@@ -72,6 +72,27 @@ void carregarImagem(const string& nomeArquivo, int**& imagem, int& linhas, int& 
     arquivo.close();
 }
 
+// Gera um nome único para o arquivo PGM, consultando nomes.txt
+string gerarNomeUnico(const string& base, const string& extensao, const string& registro) {
+    int contador = 1;
+    string nome;
+    bool existe;
+    do {
+        nome = base + "_" + to_string(contador) + extensao;
+        existe = false;
+        ifstream arq(registro);
+        string nomeLido;
+        while (getline(arq, nomeLido)) {
+            if (nomeLido == nome) {
+                existe = true;
+                break;
+            }
+        }
+        contador++;
+    } while (existe);
+    return nome;
+}
+
 // Função para salvar uma imagem PGM (formato ASCII)
 void salvarImagem(int** imagem, int linhas, int colunas, int maxValor, const string& base, const string& extensao, const string& registro) {
     // Gera nome único
@@ -117,31 +138,11 @@ void ajustarBrilho(int** imagem, int linhas, int colunas, int ajuste) {
     }
 }
 
-// Gera um nome único para o arquivo PGM, consultando nomes.txt
-string gerarNomeUnico(const string& base, const string& extensao, const string& registro) {
-    int contador = 1;
-    string nome;
-    bool existe;
-    do {
-        nome = base + "_" + to_string(contador) + extensao;
-        existe = false;
-        ifstream arq(registro);
-        string nomeLido;
-        while (getline(arq, nomeLido)) {
-            if (nomeLido == nome) {
-                existe = true;
-                break;
-            }
-        }
-        contador++;
-    } while (existe);
-    return nome;
-}
-
 int main() {
     string nomeArquivo;
     int** imagem = nullptr;
     int linhas = 0, colunas = 0, maxValor = 0;
+    string registro = "nomes.txt"; // Arquivo para registrar nomes de imagens
 
     string nomes[100]; // Array para armazenar nomes de arquivos
     int qtdNomes = 0; // Quantidade de nomes lidos
@@ -215,7 +216,8 @@ int main() {
                             cout << "Brilho ajustado com sucesso!" << endl;
 
                             // Salva a imagem ajustada
-                            
+                            salvarImagem(imagem, linhas, colunas, maxValor, "saida", ".pgm", registro);
+
                             break;
                         }
                         case 2:
