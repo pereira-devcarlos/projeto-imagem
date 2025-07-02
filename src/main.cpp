@@ -411,6 +411,18 @@ int main() {
                             cout << "Digite o valor do limiar (0 a " << maxValor << "): ";
                             cin >> limiar;
 
+                            if (limiar < 0 || limiar > maxValor) {
+                                cout << "Limiar invalido. Deve estar entre 0 e " << maxValor << "." << endl;
+                            } else {
+                                binarizarImagem(imagem, linhas, colunas, limiar);
+                                cout << "\nImagem binarizada com sucesso!" << endl;
+
+                                // Salva a imagem binarizada
+                                salvarImagem(imagem, linhas, colunas, maxValor, "saida", ".pgm", registro);
+
+                                // Carrega novamente a imagem para refletir as alterações
+                                carregarImagem(nomeArquivo, imagem, linhas, colunas, maxValor);
+                            }
 
                             break;
                         case 5:
