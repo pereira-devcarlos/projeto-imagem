@@ -221,6 +221,15 @@ void espelharVertical(int**& imagem, int linhas, int colunas) {
     }
 }
 
+// Função para negativar a imagem
+void negativarImagem(int** imagem, int linhas, int colunas, int maxValor) {
+    for (int i = 0; i < linhas; ++i) {
+        for (int j = 0; j < colunas; ++j) {
+            imagem[i][j] = maxValor - imagem[i][j];
+        }
+    }
+}
+
 int main() {
     string nomeArquivo;
     int** imagem = nullptr;
@@ -372,12 +381,18 @@ int main() {
                             }
                             break;
                         case 3:
-                            // Implementar negativar imagem
-                            cout << "Funcionalidade de negativar imagem ainda não implementada." << endl;
+                            // Negativa a imagem
+                            negativarImagem(imagem, linhas, colunas, maxValor);
+                            cout << "\nImagem negativada com sucesso!" << endl;
+
+                            // Salva a imagem negativada
+                            salvarImagem(imagem, linhas, colunas, maxValor, "saida", ".pgm", registro);
+
+                            // Carrega novamente a imagem para refletir as alterações
+                            carregarImagem(nomeArquivo, imagem, linhas, colunas, maxValor);
                             break;
                         case 4:
-                            // Implementar binarizar imagem
-                            cout << "Funcionalidade de binarizar imagem ainda não implementada." << endl;
+
                             break;
                         case 5:
                             // Implementar iconizar imagem
