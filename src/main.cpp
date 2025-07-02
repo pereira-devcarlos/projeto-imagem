@@ -146,7 +146,6 @@ int main() {
 
     string nomes[100]; // Array para armazenar nomes de arquivos
     int qtdNomes = 0; // Quantidade de nomes lidos
-    int contadorImagens = 0; // Contador para gerar nomes únicos de arquivos
 
     // Lê os nomes dos arquivos do arquivo nomes.txt
     ifstream arquivoNomes("nomes.txt");
@@ -218,6 +217,8 @@ int main() {
                             // Salva a imagem ajustada
                             salvarImagem(imagem, linhas, colunas, maxValor, "saida", ".pgm", registro);
 
+                            // Carrega novamente a imagem para refletir as alterações
+                            carregarImagem(nomeArquivo, imagem, linhas, colunas, maxValor);
                             break;
                         }
                         case 2:
