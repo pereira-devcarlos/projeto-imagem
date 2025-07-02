@@ -243,6 +243,50 @@ void binarizarImagem(int**& imagem, int linhas, int colunas, int limiar) {
     }
 }
 
+// Função para iconizar a imagem
+void iconizarImagem(int**& imagem, int& linhas, int& colunas, int tamanhoIcone) {
+    int blocoL = linhas / tamanhoIcone;
+    int blocoC = colunas / tamanhoIcone;
+
+    int** novaImagem = new int*[tamanhoIcone];
+    for (int i = 0; i < tamanhoIcone; i++)
+        novaImagem[i] = new int[tamanhoIcone];
+
+    for (int i = 0; i < tamanhoIcone; i++) {
+        for (int j = 0; j < tamanhoIcone; j++) {
+            int soma = 0;
+            int cont = 0;
+
+            for (int x = 0; x < blocoL; x++) {
+                for (int y = 0; y < blocoC; y++) {
+                    int linhaOrig = i * blocoL + x;
+                    int colunaOrig = j * blocoC + y;
+
+                    // Verifica se está dentro da imagem original
+                    if (linhaOrig < linhas && colunaOrig < colunas) {
+                        soma += imagem[linhaOrig][colunaOrig];
+                        cont++;
+                    }
+                }
+            }
+
+            novaImagem[i][j] = (cont > 0) ? (soma / cont) : 0;
+        }
+    }
+
+    // Libera a memória da imagem original
+    for (int i = 0; i < linhas; ++i) {
+        delete[] imagem[i];
+    }
+    delete[] imagem;
+
+    // Atualiza o ponteiro da imagem para apontar para a nova matriz do ícone
+    imagem = novaImagem;
+
+    // Atualiza as dimensões da imagem
+    linhas = colunas = tamanhoIcone;
+}
+
 int main() {
     string nomeArquivo;
     int** imagem = nullptr;
@@ -426,8 +470,17 @@ int main() {
 
                             break;
                         case 5:
-                            // Implementar iconizar imagem
-                            cout << "Funcionalidade de iconizar imagem ainda não implementada." << endl;
+                            // Iconizar imagem
+                            cout << "\nIconizar imagem em 64x64 pixels..." << endl;
+
+                            iconizarImagem(imagem, linhas, colunas, 64);
+                            cout << "\nImagem iconizada com sucesso!" << endl;
+
+                            // Salva a imagem iconizada
+                            salvarImagem(imagem, linhas, colunas, maxValor, "saida", ".pgm", registro);
+
+                            // Carrega novamente a imagem para refletir as alterações
+                            carregarImagem(nomeArquivo, imagem, linhas, colunas, maxValor);
                             break;
                         case 0:
                             cout << "\nVoltando ao menu principal..." << endl;
