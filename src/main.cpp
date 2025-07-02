@@ -149,7 +149,6 @@ void rotacionarDireita(int**& imagem, int& linhas, int& colunas) {
     // Copia os pixels da imagem original para a nova matriz, rotacionando 90 graus à direita
     for (int i = 0; i < linhas; ++i) {
         for (int j = 0; j < colunas; ++j) {
-            // O pixel (i, j) da imagem original vai para (j, linhas - 1 - i) na nova imagem
             novaImagem[j][linhas - 1 - i] = imagem[i][j];
         }
     }
@@ -163,8 +162,10 @@ void rotacionarDireita(int**& imagem, int& linhas, int& colunas) {
     // Atualiza o ponteiro da imagem para apontar para a nova matriz rotacionada
     imagem = novaImagem;
 
-    // Troca os valores de linhas e colunas, pois a imagem foi rotacionada
-    swap(linhas, colunas);
+    // Troca os valores de linhas e colunas usando variável auxiliar
+    int temp = linhas;
+    linhas = colunas;
+    colunas = temp;
 }
 
 int main() {
@@ -265,7 +266,7 @@ int main() {
                             switch (opcaoRotacao) {
                                 case 1:
                                     // Implementar rotacionar 90 graus a direita
-                                    rotacionar90Direita(imagem, linhas, colunas);
+                                    rotacionarDireita(imagem, linhas, colunas);
                                     cout << "Imagem rotacionada 90 graus a direita!" << endl;
 
                                     // Salva a imagem rotacionada
