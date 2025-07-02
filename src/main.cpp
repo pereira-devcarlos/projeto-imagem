@@ -73,10 +73,10 @@ void carregarImagem(const string& nomeArquivo, int**& imagem, int& linhas, int& 
 }
 
 // Função para salvar uma imagem PGM (formato ASCII)
-void salvarImagem(int** imagem, int linhas, int colunas, int maxValor) {
-    ofstream arquivo("saida.pgm");
+void salvarImagem(int** imagem, int linhas, int colunas, int maxValor, const string& nomeArquivo) {
+    ofstream arquivo(nomeArquivo);
     if (!arquivo.is_open()) {
-        cout << "Erro ao abrir o arquivo para escrita: saida.pgm" << endl;
+        cout << "Erro ao abrir o arquivo para escrita: " << nomeArquivo << endl;
         return;
     }
 
@@ -106,6 +106,27 @@ void ajustarBrilho(int** imagem, int linhas, int colunas, int ajuste) {
             if (imagem[i][j] > 255) imagem[i][j] = 255; // Considerando maxValor como 255 para PGM
         }
     }
+}
+
+// Gera um nome único para o arquivo PGM, consultando nomes.txt
+string gerarNomeUnico(const string& base, const string& extensao, const string& registro) {
+    int contador = 1;
+    string nome;
+    bool existe;
+    do {
+        nome = base + "_" + to_string(contador) + extensao;
+        existe = false;
+        ifstream arq(registro);
+        string nomeLido;
+        while (getline(arq, nomeLido)) {
+            if (nomeLido == nome) {
+                existe = true;
+                break;
+            }
+        }
+        contador++;
+    } while (existe);
+    return nome;
 }
 
 int main() {
