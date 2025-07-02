@@ -73,7 +73,10 @@ void carregarImagem(const string& nomeArquivo, int**& imagem, int& linhas, int& 
 }
 
 // Função para salvar uma imagem PGM (formato ASCII)
-void salvarImagem(int** imagem, int linhas, int colunas, int maxValor, const string& nomeArquivo) {
+void salvarImagem(int** imagem, int linhas, int colunas, int maxValor, const string& base, const string& extensao, const string& registro) {
+    // Gera nome único
+    string nomeArquivo = gerarNomeUnico(base, extensao, registro);
+
     ofstream arquivo(nomeArquivo);
     if (!arquivo.is_open()) {
         cout << "Erro ao abrir o arquivo para escrita: " << nomeArquivo << endl;
@@ -90,10 +93,16 @@ void salvarImagem(int** imagem, int linhas, int colunas, int maxValor, const str
         for (int j = 0; j < colunas; ++j) {
             arquivo << imagem[i][j] << " ";
         }
-        arquivo << "\n"; // Nova linha após cada linha de pixels
+        arquivo << "\n";
     }
-
     arquivo.close();
+
+    // Registra o nome no arquivo de nomes
+    ofstream arq(registro, ios::app);
+    arq << nomeArquivo << endl;
+    arq.close();
+
+    cout << "Imagem salva como: " << nomeArquivo << endl;
 }
 
 // Função para clarar ou escurecer a imagem
@@ -204,6 +213,9 @@ int main() {
 
                             ajustarBrilho(imagem, linhas, colunas, ajuste);
                             cout << "Brilho ajustado com sucesso!" << endl;
+
+                            // Salva a imagem ajustada
+                            
                             break;
                         }
                         case 2:
