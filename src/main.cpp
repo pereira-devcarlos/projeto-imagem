@@ -138,6 +138,35 @@ void ajustarBrilho(int** imagem, int linhas, int colunas, int ajuste) {
     }
 }
 
+// Função para rotacionar a imagem 90 graus para a direita
+void rotacionarDireita(int**& imagem, int& linhas, int& colunas) {
+    // Cria uma nova matriz com dimensões invertidas (colunas x linhas)
+    int** novaImagem = new int*[colunas];
+    for (int i = 0; i < colunas; ++i) {
+        novaImagem[i] = new int[linhas];
+    }
+
+    // Copia os pixels da imagem original para a nova matriz, rotacionando 90 graus à direita
+    for (int i = 0; i < linhas; ++i) {
+        for (int j = 0; j < colunas; ++j) {
+            // O pixel (i, j) da imagem original vai para (j, linhas - 1 - i) na nova imagem
+            novaImagem[j][linhas - 1 - i] = imagem[i][j];
+        }
+    }
+
+    // Libera a memória da imagem original
+    for (int i = 0; i < linhas; ++i) {
+        delete[] imagem[i];
+    }
+    delete[] imagem;
+
+    // Atualiza o ponteiro da imagem para apontar para a nova matriz rotacionada
+    imagem = novaImagem;
+
+    // Troca os valores de linhas e colunas, pois a imagem foi rotacionada
+    swap(linhas, colunas);
+}
+
 int main() {
     string nomeArquivo;
     int** imagem = nullptr;
@@ -164,11 +193,11 @@ int main() {
 
     int opcao = 1;
     while (opcao != 0) {
-        cout << "\n====== Menu de Opcoes ======" << endl;
+        cout << "\n========= Menu de Opcoes =========" << endl;
         cout << "[1] - Carregar Imagem" << endl;
         cout << "[2] - Menu de Alteracoes da Imagem" << endl;
         cout << "[0] - Encerrar Programa" << endl;
-        cout << "=============================" << endl;
+        cout << "==================================" << endl;
         cout << "Escolha uma opcao: ";
         cin >> opcao;
 
@@ -223,18 +252,27 @@ int main() {
                         }
                         case 2:
                             // Implementar rotacionar imagem
-                            cout << "======= Rotacionar Imagem =======" << endl;
+                            cout << "\n========= Rotacionar Imagem =========" << endl;
                             cout << "[1] - Rotacionar 90 graus a direita" << endl;
                             cout << "[2] - Rotacionar 90 graus a esquerda" << endl;
                             cout << "[3] - Espelhar horizontalmente" << endl;
                             cout << "[4] - Espelhar verticalmente" << endl;
                             cout << "[0] - Voltar ao Menu de Alteracoes" << endl;
+                            cout << "=====================================" << endl;
                             cout << "Escolha uma opcao: ";
-                            cin >> opcao;
-                            switch (opcao) {
+                            int opcaoRotacao;
+                            cin >> opcaoRotacao;
+                            switch (opcaoRotacao) {
                                 case 1:
                                     // Implementar rotacionar 90 graus a direita
-                                    cout << "Funcionalidade de rotacionar 90 graus a direita ainda não implementada." << endl;
+                                    rotacionar90Direita(imagem, linhas, colunas);
+                                    cout << "Imagem rotacionada 90 graus a direita!" << endl;
+
+                                    // Salva a imagem rotacionada
+                                    salvarImagem(imagem, linhas, colunas, maxValor, "saida", ".pgm", registro);
+
+                                    // Carrega novamente a imagem para refletir as alterações
+                                    carregarImagem(nomeArquivo, imagem, linhas, colunas, maxValor);
                                     break;
                                 case 2:
                                     // Implementar rotacionar 90 graus a esquerda
