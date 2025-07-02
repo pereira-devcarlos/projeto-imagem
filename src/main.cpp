@@ -168,6 +168,36 @@ void rotacionarDireita(int**& imagem, int& linhas, int& colunas) {
     colunas = temp;
 }
 
+// Função para rotacionar a imagem a 90 graus para a esquerda
+void rotacionarEsquerda(int**& imagem, int& linhas, int& colunas) {
+    // Cria uma nova matriz com dimensões invertidas (colunas x linhas)
+    int** novaImagem = new int*[colunas];
+    for (int i = 0; i < colunas; ++i) {
+        novaImagem[i] = new int[linhas];
+    }
+
+    // Copia os pixels da imagem original para a nova matriz, rotacionando 90 graus à esquerda
+    for (int i = 0; i < linhas; ++i) {
+        for (int j = 0; j < colunas; ++j) {
+            novaImagem[colunas - 1 - j][i] = imagem[i][j];
+        }
+    }
+
+    // Libera a memória da imagem original
+    for (int i = 0; i < linhas; ++i) {
+        delete[] imagem[i];
+    }
+    delete[] imagem;
+
+    // Atualiza o ponteiro da imagem para apontar para a nova matriz rotacionada
+    imagem = novaImagem;
+
+    // Troca os valores de linhas e colunas usando variável auxiliar
+    int temp = linhas;
+    linhas = colunas;
+    colunas = temp;
+}
+
 int main() {
     string nomeArquivo;
     int** imagem = nullptr;
