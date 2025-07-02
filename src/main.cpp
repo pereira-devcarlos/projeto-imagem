@@ -27,7 +27,8 @@ void liberarImagem(int** imagem, int linhas) {
 void carregarImagem(const string& nomeArquivo, int**& imagem, int& linhas, int& colunas, int& maxValor) {
     ifstream arquivo(nomeArquivo);
     if (!arquivo.is_open()) {
-        cout << "Erro ao abrir o arquivo: " << nomeArquivo << endl;
+        cout << "\nErro ao abrir o arquivo: " << nomeArquivo << endl;
+        cout << "Certifique-se de que o arquivo existe e esta no formato correto." << endl;
         return;
     }
 
@@ -209,6 +210,17 @@ void espelharHorizontal(int**& imagem, int linhas, int colunas) {
     }
 }
 
+// Função para espelhar verticalmente a imagem
+void espelharVertical(int**& imagem, int linhas, int colunas) {
+    for (int i = 0; i < linhas / 2; ++i) {
+        for (int j = 0; j < colunas; ++j) {
+            int temp = imagem[i][j];
+            imagem[i][j] = imagem[linhas - 1 - i][j];
+            imagem[linhas - 1 - i][j] = temp;
+        }
+    }
+}
+
 int main() {
     string nomeArquivo;
     int** imagem = nullptr;
@@ -257,7 +269,9 @@ int main() {
 
                 // Carrega a nova imagem
                 carregarImagem(nomeArquivo, imagem, linhas, colunas, maxValor);
-                cout << "\nImagem carregada com sucesso!" << endl;
+                if (imagem != nullptr) {
+                    cout << "\nImagem carregada com sucesso!" << endl;
+                }
                 break;
 
             case 2:
@@ -274,9 +288,10 @@ int main() {
                     cout << "[0] - Voltar ao Menu Principal" << endl;
                     cout << "===========================================" << endl;
                     cout << "Escolha uma opcao: ";
-                    cin >> opcao;
+                    int opAlteracao;
+                    cin >> opAlteracao;
 
-                    switch (opcao) {
+                    switch (opAlteracao) {
                         case 1: {
                             int ajuste;
                             cout << "Digite o valor de ajuste de brilho (positivo para clarear, negativo para escurecer): ";
@@ -340,10 +355,17 @@ int main() {
                                     break;
                                 case 4:
                                     // Implementar espelhar verticalmente
-                                    cout << "Funcionalidade de espelhar verticalmente ainda não implementada." << endl;
+                                    espelharVertical(imagem, linhas, colunas);
+                                    cout << "Imagem espelhada verticalmente!" << endl;
+
+                                    // Salva a imagem espelhada
+                                    salvarImagem(imagem, linhas, colunas, maxValor, "saida", ".pgm", registro);
+
+                                    // Carrega novamente a imagem para refletir as alterações
+                                    carregarImagem(nomeArquivo, imagem, linhas, colunas, maxValor);
                                     break;
                                 case 0:
-                                    cout << "\nVoltando ao menu de alteracoes..." << endl;
+                                    cout << "\nVoltando ao menu principal..." << endl;
                                     break;
                                 default:
                                     cout << "Opcao invalida. Tente novamente." << endl;
