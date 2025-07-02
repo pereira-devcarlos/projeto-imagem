@@ -230,6 +230,19 @@ void negativarImagem(int** imagem, int linhas, int colunas, int maxValor) {
     }
 }
 
+// Função para binarizar a imagem
+void binarizarImagem(int**& imagem, int linhas, int colunas, int limiar) {
+    for (int i = 0; i < linhas; ++i) {
+        for (int j = 0; j < colunas; ++j) {
+            if (imagem[i][j] > limiar) {
+                imagem[i][j] = 255;
+            } else {
+                imagem[i][j] = 0;
+            }
+        }
+    }
+}
+
 int main() {
     string nomeArquivo;
     int** imagem = nullptr;
@@ -392,6 +405,12 @@ int main() {
                             carregarImagem(nomeArquivo, imagem, linhas, colunas, maxValor);
                             break;
                         case 4:
+                            // Binarizar a imagem por um limiar informado pelo usuário
+                            cout << "\n========= Binarizar Imagem =========" << endl;
+                            int limiar;
+                            cout << "Digite o valor do limiar (0 a " << maxValor << "): ";
+                            cin >> limiar;
+
 
                             break;
                         case 5:
