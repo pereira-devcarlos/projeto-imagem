@@ -60,12 +60,50 @@ Cada operação gera um novo arquivo PGM de saída, respeitando o formato e limi
 
 ---
 
-### ▶️ Como Executar
+### ▶️ Como Compilar e Executar
 
-1. **Compile** o projeto utilizando um compilador C/C++ de sua escolha.
-2. **Execute** o programa.
-3. **Siga o menu** para escolher e aplicar as operações desejadas.
-4. **Confira os arquivos** PGM gerados após cada operação.
+1. **Compile o projeto** com um compilador C++. Exemplo usando g++:
+   ```sh
+   g++ -o projeto-imagem projeto-imagem.cpp
+   ```
+
+2. **Coloque a imagem PGM** (ASCII, formato P2) na mesma pasta do executável.
+
+3. **Execute o programa**:
+   ```sh
+   ./projeto-imagem
+   ```
+
+4. **Siga o menu interativo:**
+
+   - **[1] Carregar Imagem:**  
+     Informe o nome do arquivo com a extensão `.pgm` (exemplo: `imagem.pgm`).
+   - **[2] Menu de Alterações da Imagem:**  
+     Após carregar a imagem, acesse este menu para escolher operações:
+     - Escurecer ou Clarear (ajuste de brilho)
+     - Rotacionar (direita/esquerda) ou Espelhar (horizontal/vertical)
+     - Negativar (imagem negativa)
+     - Binarizar (por limiar informado)
+     - Iconizar (reduz para 64x64 pixels)
+     - Voltar ao menu principal
+
+     > **Importante:**  
+     > Após cada alteração escolhida, uma nova imagem PGM é gerada automaticamente com nome único e salva no diretório do executável.
+     >  
+     > O nome do novo arquivo é registrado em `nomes.txt`. Você pode consultar esse arquivo para ver todos os nomes gerados.
+
+   - **[0] Encerrar Programa:**  
+     Sai do programa e libera a memória utilizada.
+
+---
+
+### 📝 Observações de Uso
+
+- Só é possível aplicar operações **depois de carregar uma imagem válida**.
+- Os arquivos gerados são salvos no formato PGM (ASCII/P2) e têm nomes automáticos, como `saida_1.pgm`, `saida_2.pgm` etc.
+- O histórico dos arquivos gerados fica em `nomes.txt`, criado no mesmo diretório.
+- Sempre que uma operação é realizada, a imagem original é recarregada, ou seja, as operações **não são cumulativas** a partir do resultado anterior.
+- O programa foi desenvolvido para ser utilizado via terminal/console, utilizando apenas `cin` e `cout` para interação com o usuário.
 
 ---
 
