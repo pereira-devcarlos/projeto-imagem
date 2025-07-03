@@ -20,10 +20,9 @@ void binarizarImagem(int**& imagem, int linhas, int colunas, int limiar);
 void iconizarImagem(int**& imagem, int& linhas, int& colunas, int tamanhoIcone);
 
 int main() {
-    string nomeArquivo;
+    string nomeArquivo, registro = "nomes.txt"; // Arquivo para registrar nomes de imagens
     int** imagem = nullptr;
     int linhas = 0, colunas = 0, maxValor = 0;
-    string registro = "nomes.txt"; // Arquivo para registrar nomes de imagens
 
     int opcao = 1;
     while (opcao != 0) {
