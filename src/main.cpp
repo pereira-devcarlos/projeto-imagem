@@ -1,3 +1,18 @@
+/* 
+ * Arquivo:   main.cpp
+ * Autor: 2024.2.08.001
+ * Name:Carlos Eduardo Pereira dos Santos
+ * Disciplina: AEDs I (Prática)
+ * Criado em 03 de Julho de 2025, 11:20
+ * Local: Unifal Santa Clara
+ 
+    Objetivo:
+  * Programa para edição de imagens PGM em modo texto.
+  * Permite carregar, salvar, clarear/escurecer, rotacionar, espelhar, negativar, binarizar e iconizar imagens.
+  * Cada alteração gera um novo arquivo PGM com nome único.
+  * Projeto para praticar manipulação de matrizes e ponteiros em C++.
+ */
+
 #include <iostream>
 #include <fstream>
 #include <string>
