@@ -4,6 +4,212 @@
 
 using namespace std;
 
+// Protótipos das funções
+
+int main() {
+    string nomeArquivo;
+    int** imagem = nullptr;
+    int linhas = 0, colunas = 0, maxValor = 0;
+    string registro = "nomes.txt"; // Arquivo para registrar nomes de imagens
+
+    int opcao = 1;
+    while (opcao != 0) {
+        cout << "\n========= Menu de Opcoes =========" << endl;
+        cout << "[1] - Carregar Imagem" << endl;
+        cout << "[2] - Menu de Alteracoes da Imagem" << endl;
+        cout << "[0] - Encerrar Programa" << endl;
+        cout << "==================================" << endl;
+        cout << "Escolha uma opcao: ";
+        cin >> opcao;
+
+        switch (opcao) {
+            case 1:
+                cout << "\nO formato do nome do arquivo deve ser: 'exemplo.pgm'" << endl;
+                cout << "Digite o nome do arquivo: ";
+                cin >> nomeArquivo;
+                
+                // Libera a imagem anterior, se existir
+                if (imagem != nullptr) {
+                    liberarImagem(imagem, linhas);
+                    imagem = nullptr;
+                }
+
+                // Carrega a nova imagem
+                carregarImagem(nomeArquivo, imagem, linhas, colunas, maxValor);
+                if (imagem != nullptr) {
+                    cout << "\nImagem carregada com sucesso!" << endl;
+                }
+                break;
+
+            case 2:
+                if (imagem == nullptr) {
+                    cout << "\nNenhuma imagem carregada. Por favor, carregue uma imagem primeiro." << endl;
+                }else {
+                    // Exibe o menu de alterações da imagem
+                    cout << "\n====== Menu de Alteracoes da Imagem ======" << endl;
+                    cout << "[1] - Escurecer ou Clarear Imagem" << endl;
+                    cout << "[2] - Rotacionar Imagem" << endl;
+                    cout << "[3] - Negativar a Imagem" << endl;
+                    cout << "[4] - Binarizar Imagem" << endl;
+                    cout << "[5] - Iconizar Imagem" << endl;
+                    cout << "[0] - Voltar ao Menu Principal" << endl;
+                    cout << "===========================================" << endl;
+                    cout << "Escolha uma opcao: ";
+                    int opAlteracao;
+                    cin >> opAlteracao;
+
+                    switch (opAlteracao) {
+                        case 1: {
+                            int ajuste;
+                            cout << "Digite o valor de ajuste de brilho (positivo para clarear, negativo para escurecer): ";
+                            cin >> ajuste;
+
+                            ajustarBrilho(imagem, linhas, colunas, ajuste);
+                            cout << "\nBrilho ajustado com sucesso!" << endl;
+
+                            // Salva a imagem ajustada
+                            salvarImagem(imagem, linhas, colunas, maxValor, "saida", ".pgm", registro);
+
+                            // Carrega novamente a imagem para refletir as alterações
+                            carregarImagem(nomeArquivo, imagem, linhas, colunas, maxValor);
+                            break;
+                        }
+                        case 2:
+                            // Implementar rotacionar imagem
+                            cout << "\n========= Rotacionar Imagem =========" << endl;
+                            cout << "[1] - Rotacionar 90 graus a direita" << endl;
+                            cout << "[2] - Rotacionar 90 graus a esquerda" << endl;
+                            cout << "[3] - Espelhar horizontalmente" << endl;
+                            cout << "[4] - Espelhar verticalmente" << endl;
+                            cout << "[0] - Voltar ao Menu de Alteracoes" << endl;
+                            cout << "=====================================" << endl;
+                            cout << "Escolha uma opcao: ";
+                            int opcaoRotacao;
+                            cin >> opcaoRotacao;
+                            switch (opcaoRotacao) {
+                                case 1:
+                                    // Implementar rotacionar 90 graus a direita
+                                    rotacionarDireita(imagem, linhas, colunas);
+                                    cout << "\nImagem rotacionada 90 graus a direita!" << endl;
+
+                                    // Salva a imagem rotacionada
+                                    salvarImagem(imagem, linhas, colunas, maxValor, "saida", ".pgm", registro);
+
+                                    // Carrega novamente a imagem para refletir as alterações
+                                    carregarImagem(nomeArquivo, imagem, linhas, colunas, maxValor);
+                                    break;
+                                case 2:
+                                    // Implementar rotacionar 90 graus a esquerda
+                                    rotacionarEsquerda(imagem, linhas, colunas);
+                                    cout << "\nImagem rotacionada 90 graus a esquerda!" << endl;
+
+                                    // Salva a imagem rotacionada
+                                    salvarImagem(imagem, linhas, colunas, maxValor, "saida", ".pgm", registro);
+
+                                    // Carrega novamente a imagem para refletir as alterações
+                                    carregarImagem(nomeArquivo, imagem, linhas, colunas, maxValor);
+                                    break;
+                                case 3:
+                                    // Implementar espelhar horizontalmente
+                                    espelharHorizontal(imagem, linhas, colunas);
+                                    cout << "\nImagem espelhada horizontalmente!" << endl;
+
+                                    // Salva a imagem espelhada
+                                    salvarImagem(imagem, linhas, colunas, maxValor, "saida", ".pgm", registro);
+
+                                    // Carrega novamente a imagem para refletir as alterações
+                                    carregarImagem(nomeArquivo, imagem, linhas, colunas, maxValor);
+                                    break;
+                                case 4:
+                                    // Implementar espelhar verticalmente
+                                    espelharVertical(imagem, linhas, colunas);
+                                    cout << "\nImagem espelhada verticalmente!" << endl;
+
+                                    // Salva a imagem espelhada
+                                    salvarImagem(imagem, linhas, colunas, maxValor, "saida", ".pgm", registro);
+
+                                    // Carrega novamente a imagem para refletir as alterações
+                                    carregarImagem(nomeArquivo, imagem, linhas, colunas, maxValor);
+                                    break;
+                                case 0:
+                                    cout << "\nVoltando ao menu principal..." << endl;
+                                    break;
+                                default:
+                                    cout << "\nOpcao invalida. Tente novamente." << endl;
+                            }
+                            break;
+                        case 3:
+                            // Negativa a imagem
+                            negativarImagem(imagem, linhas, colunas, maxValor);
+                            cout << "\nImagem negativada com sucesso!" << endl;
+
+                            // Salva a imagem negativada
+                            salvarImagem(imagem, linhas, colunas, maxValor, "saida", ".pgm", registro);
+
+                            // Carrega novamente a imagem para refletir as alterações
+                            carregarImagem(nomeArquivo, imagem, linhas, colunas, maxValor);
+                            break;
+                        case 4:
+                            // Binarizar a imagem por um limiar informado pelo usuário
+                            cout << "\n========= Binarizar Imagem =========" << endl;
+                            int limiar;
+                            cout << "Digite o valor do limiar (0 a " << maxValor << "): ";
+                            cin >> limiar;
+
+                            if (limiar < 0 || limiar > maxValor) {
+                                cout << "Limiar invalido. Deve estar entre 0 e " << maxValor << "." << endl;
+                            } else {
+                                binarizarImagem(imagem, linhas, colunas, limiar);
+                                cout << "\nImagem binarizada com sucesso!" << endl;
+
+                                // Salva a imagem binarizada
+                                salvarImagem(imagem, linhas, colunas, maxValor, "saida", ".pgm", registro);
+
+                                // Carrega novamente a imagem para refletir as alterações
+                                carregarImagem(nomeArquivo, imagem, linhas, colunas, maxValor);
+                            }
+
+                            break;
+                        case 5:
+                            // Iconizar imagem
+                            cout << "\nIconizar imagem em 64x64 pixels..." << endl;
+
+                            iconizarImagem(imagem, linhas, colunas, 64);
+                            cout << "\nImagem iconizada com sucesso!" << endl;
+
+                            // Salva a imagem iconizada
+                            salvarImagem(imagem, linhas, colunas, maxValor, "saida", ".pgm", registro);
+
+                            // Carrega novamente a imagem para refletir as alterações
+                            carregarImagem(nomeArquivo, imagem, linhas, colunas, maxValor);
+                            break;
+                        case 0:
+                            cout << "\nVoltando ao menu principal..." << endl;
+                            break;
+                        default:
+                            cout << "Opcao invalida. Tente novamente." << endl;
+                    }
+                }
+                break;
+
+            case 0:
+                cout << "Encerrando o programa..." << endl;
+                break;
+
+            default:
+                cout << "Opcao invalida. Tente novamente." << endl;
+                break;
+        }
+    }
+
+    // Libera a imagem no final do programa, se existir
+    if (imagem != nullptr) {
+        liberarImagem(imagem, linhas);
+    }
+
+    return 0;
+}
+
 // Aloca dinamicamente uma matriz de inteiros (imagem)
 int** alocarImagem(int linhas, int colunas) {
     int** imagem = new int*[linhas];
@@ -284,208 +490,4 @@ void iconizarImagem(int**& imagem, int& linhas, int& colunas, int tamanhoIcone) 
 
     // Atualiza as dimensões da imagem
     linhas = colunas = tamanhoIcone;
-}
-
-int main() {
-    string nomeArquivo;
-    int** imagem = nullptr;
-    int linhas = 0, colunas = 0, maxValor = 0;
-    string registro = "nomes.txt"; // Arquivo para registrar nomes de imagens
-
-    int opcao = 1;
-    while (opcao != 0) {
-        cout << "\n========= Menu de Opcoes =========" << endl;
-        cout << "[1] - Carregar Imagem" << endl;
-        cout << "[2] - Menu de Alteracoes da Imagem" << endl;
-        cout << "[0] - Encerrar Programa" << endl;
-        cout << "==================================" << endl;
-        cout << "Escolha uma opcao: ";
-        cin >> opcao;
-
-        switch (opcao) {
-            case 1:
-                cout << "\nO formato do nome do arquivo deve ser: 'exemplo.pgm'" << endl;
-                cout << "Digite o nome do arquivo: ";
-                cin >> nomeArquivo;
-                
-                // Libera a imagem anterior, se existir
-                if (imagem != nullptr) {
-                    liberarImagem(imagem, linhas);
-                    imagem = nullptr;
-                }
-
-                // Carrega a nova imagem
-                carregarImagem(nomeArquivo, imagem, linhas, colunas, maxValor);
-                if (imagem != nullptr) {
-                    cout << "\nImagem carregada com sucesso!" << endl;
-                }
-                break;
-
-            case 2:
-                if (imagem == nullptr) {
-                    cout << "\nNenhuma imagem carregada. Por favor, carregue uma imagem primeiro." << endl;
-                }else {
-                    // Exibe o menu de alterações da imagem
-                    cout << "\n====== Menu de Alteracoes da Imagem ======" << endl;
-                    cout << "[1] - Escurecer ou Clarear Imagem" << endl;
-                    cout << "[2] - Rotacionar Imagem" << endl;
-                    cout << "[3] - Negativar a Imagem" << endl;
-                    cout << "[4] - Binarizar Imagem" << endl;
-                    cout << "[5] - Iconizar Imagem" << endl;
-                    cout << "[0] - Voltar ao Menu Principal" << endl;
-                    cout << "===========================================" << endl;
-                    cout << "Escolha uma opcao: ";
-                    int opAlteracao;
-                    cin >> opAlteracao;
-
-                    switch (opAlteracao) {
-                        case 1: {
-                            int ajuste;
-                            cout << "Digite o valor de ajuste de brilho (positivo para clarear, negativo para escurecer): ";
-                            cin >> ajuste;
-
-                            ajustarBrilho(imagem, linhas, colunas, ajuste);
-                            cout << "\nBrilho ajustado com sucesso!" << endl;
-
-                            // Salva a imagem ajustada
-                            salvarImagem(imagem, linhas, colunas, maxValor, "saida", ".pgm", registro);
-
-                            // Carrega novamente a imagem para refletir as alterações
-                            carregarImagem(nomeArquivo, imagem, linhas, colunas, maxValor);
-                            break;
-                        }
-                        case 2:
-                            // Implementar rotacionar imagem
-                            cout << "\n========= Rotacionar Imagem =========" << endl;
-                            cout << "[1] - Rotacionar 90 graus a direita" << endl;
-                            cout << "[2] - Rotacionar 90 graus a esquerda" << endl;
-                            cout << "[3] - Espelhar horizontalmente" << endl;
-                            cout << "[4] - Espelhar verticalmente" << endl;
-                            cout << "[0] - Voltar ao Menu de Alteracoes" << endl;
-                            cout << "=====================================" << endl;
-                            cout << "Escolha uma opcao: ";
-                            int opcaoRotacao;
-                            cin >> opcaoRotacao;
-                            switch (opcaoRotacao) {
-                                case 1:
-                                    // Implementar rotacionar 90 graus a direita
-                                    rotacionarDireita(imagem, linhas, colunas);
-                                    cout << "\nImagem rotacionada 90 graus a direita!" << endl;
-
-                                    // Salva a imagem rotacionada
-                                    salvarImagem(imagem, linhas, colunas, maxValor, "saida", ".pgm", registro);
-
-                                    // Carrega novamente a imagem para refletir as alterações
-                                    carregarImagem(nomeArquivo, imagem, linhas, colunas, maxValor);
-                                    break;
-                                case 2:
-                                    // Implementar rotacionar 90 graus a esquerda
-                                    rotacionarEsquerda(imagem, linhas, colunas);
-                                    cout << "\nImagem rotacionada 90 graus a esquerda!" << endl;
-
-                                    // Salva a imagem rotacionada
-                                    salvarImagem(imagem, linhas, colunas, maxValor, "saida", ".pgm", registro);
-
-                                    // Carrega novamente a imagem para refletir as alterações
-                                    carregarImagem(nomeArquivo, imagem, linhas, colunas, maxValor);
-                                    break;
-                                case 3:
-                                    // Implementar espelhar horizontalmente
-                                    espelharHorizontal(imagem, linhas, colunas);
-                                    cout << "\nImagem espelhada horizontalmente!" << endl;
-
-                                    // Salva a imagem espelhada
-                                    salvarImagem(imagem, linhas, colunas, maxValor, "saida", ".pgm", registro);
-
-                                    // Carrega novamente a imagem para refletir as alterações
-                                    carregarImagem(nomeArquivo, imagem, linhas, colunas, maxValor);
-                                    break;
-                                case 4:
-                                    // Implementar espelhar verticalmente
-                                    espelharVertical(imagem, linhas, colunas);
-                                    cout << "\nImagem espelhada verticalmente!" << endl;
-
-                                    // Salva a imagem espelhada
-                                    salvarImagem(imagem, linhas, colunas, maxValor, "saida", ".pgm", registro);
-
-                                    // Carrega novamente a imagem para refletir as alterações
-                                    carregarImagem(nomeArquivo, imagem, linhas, colunas, maxValor);
-                                    break;
-                                case 0:
-                                    cout << "\nVoltando ao menu principal..." << endl;
-                                    break;
-                                default:
-                                    cout << "\nOpcao invalida. Tente novamente." << endl;
-                            }
-                            break;
-                        case 3:
-                            // Negativa a imagem
-                            negativarImagem(imagem, linhas, colunas, maxValor);
-                            cout << "\nImagem negativada com sucesso!" << endl;
-
-                            // Salva a imagem negativada
-                            salvarImagem(imagem, linhas, colunas, maxValor, "saida", ".pgm", registro);
-
-                            // Carrega novamente a imagem para refletir as alterações
-                            carregarImagem(nomeArquivo, imagem, linhas, colunas, maxValor);
-                            break;
-                        case 4:
-                            // Binarizar a imagem por um limiar informado pelo usuário
-                            cout << "\n========= Binarizar Imagem =========" << endl;
-                            int limiar;
-                            cout << "Digite o valor do limiar (0 a " << maxValor << "): ";
-                            cin >> limiar;
-
-                            if (limiar < 0 || limiar > maxValor) {
-                                cout << "Limiar invalido. Deve estar entre 0 e " << maxValor << "." << endl;
-                            } else {
-                                binarizarImagem(imagem, linhas, colunas, limiar);
-                                cout << "\nImagem binarizada com sucesso!" << endl;
-
-                                // Salva a imagem binarizada
-                                salvarImagem(imagem, linhas, colunas, maxValor, "saida", ".pgm", registro);
-
-                                // Carrega novamente a imagem para refletir as alterações
-                                carregarImagem(nomeArquivo, imagem, linhas, colunas, maxValor);
-                            }
-
-                            break;
-                        case 5:
-                            // Iconizar imagem
-                            cout << "\nIconizar imagem em 64x64 pixels..." << endl;
-
-                            iconizarImagem(imagem, linhas, colunas, 64);
-                            cout << "\nImagem iconizada com sucesso!" << endl;
-
-                            // Salva a imagem iconizada
-                            salvarImagem(imagem, linhas, colunas, maxValor, "saida", ".pgm", registro);
-
-                            // Carrega novamente a imagem para refletir as alterações
-                            carregarImagem(nomeArquivo, imagem, linhas, colunas, maxValor);
-                            break;
-                        case 0:
-                            cout << "\nVoltando ao menu principal..." << endl;
-                            break;
-                        default:
-                            cout << "Opcao invalida. Tente novamente." << endl;
-                    }
-                }
-                break;
-
-            case 0:
-                cout << "Encerrando o programa..." << endl;
-                break;
-
-            default:
-                cout << "Opcao invalida. Tente novamente." << endl;
-                break;
-        }
-    }
-
-    // Libera a imagem no final do programa, se existir
-    if (imagem != nullptr) {
-        liberarImagem(imagem, linhas);
-    }
-
-    return 0;
 }
