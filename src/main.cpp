@@ -61,7 +61,7 @@ int main() {
                     // Exibe o menu de alterações da imagem
                     cout << "\n====== Menu de Alteracoes da Imagem ======" << endl;
                     cout << "[1] - Escurecer ou Clarear Imagem" << endl;
-                    cout << "[2] - Rotacionar Imagem" << endl;
+                    cout << "[2] - Rotacionar ou Espelhar Imagem" << endl;
                     cout << "[3] - Negativar a Imagem" << endl;
                     cout << "[4] - Binarizar Imagem" << endl;
                     cout << "[5] - Iconizar Imagem" << endl;
