@@ -5,6 +5,19 @@
 using namespace std;
 
 // Protótipos das funções
+int** alocarImagem(int linhas, int colunas);
+void liberarImagem(int** imagem, int linhas);
+void carregarImagem(const string& nomeArquivo, int**& imagem, int& linhas, int& colunas, int& maxValor);
+string gerarNomeUnico(const string& base, const string& extensao, const string& registro);
+void salvarImagem(int** imagem, int linhas, int colunas, int maxValor, const string& base, const string& extensao, const string& registro);
+void ajustarBrilho(int** imagem, int linhas, int colunas, int ajuste);
+void rotacionarDireita(int**& imagem, int& linhas, int& colunas);
+void rotacionarEsquerda(int**& imagem, int& linhas, int& colunas);
+void espelharHorizontal(int**& imagem, int linhas, int colunas);
+void espelharVertical(int**& imagem, int linhas, int colunas);
+void negativarImagem(int** imagem, int linhas, int colunas, int maxValor);
+void binarizarImagem(int**& imagem, int linhas, int colunas, int limiar);
+void iconizarImagem(int**& imagem, int& linhas, int& colunas, int tamanhoIcone);
 
 int main() {
     string nomeArquivo;
