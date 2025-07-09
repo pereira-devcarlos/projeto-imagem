@@ -28,10 +28,10 @@ void salvarImagem(int** imagem, int linhas, int colunas, int maxValor, const str
 void ajustarBrilho(int** imagem, int linhas, int colunas, int ajuste);
 void rotacionarDireita(int**& imagem, int& linhas, int& colunas);
 void rotacionarEsquerda(int**& imagem, int& linhas, int& colunas);
-void espelharHorizontal(int**& imagem, int linhas, int colunas);
-void espelharVertical(int**& imagem, int linhas, int colunas);
+void espelharHorizontal(int** imagem, int linhas, int colunas);
+void espelharVertical(int** imagem, int linhas, int colunas);
 void negativarImagem(int** imagem, int linhas, int colunas, int maxValor);
-void binarizarImagem(int**& imagem, int linhas, int colunas, int limiar);
+void binarizarImagem(int** imagem, int linhas, int colunas, int limiar);
 void iconizarImagem(int**& imagem, int& linhas, int& colunas, int tamanhoIcone);
 
 int main() {
