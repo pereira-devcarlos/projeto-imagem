@@ -87,8 +87,13 @@ int main() {
 
                     switch (opAlteracao) {
                         case 1: {
+                            // Ajustar brilho da imagem
+                            cout << "\n================== Ajustar Brilho ==================" << endl;
+
                             int ajuste;
-                            cout << "Digite o valor de ajuste de brilho (positivo para clarear, negativo para escurecer): ";
+                            cout << "Para clarear a imagem, digite um valor positivo." << endl;
+                            cout << "Para escurecer a imagem, digite um valor negativo." << endl;
+                            cout << "Digite o valor do ajuste de brilho (-255 a 255): ";
                             cin >> ajuste;
 
                             ajustarBrilho(imagem, linhas, colunas, ajuste);
@@ -115,7 +120,7 @@ int main() {
                             cin >> opcaoRotacao;
                             switch (opcaoRotacao) {
                                 case 1:
-                                    // Implementar rotacionar 90 graus a direita
+                                    // Rotacionar 90 graus a direita
                                     rotacionarDireita(imagem, linhas, colunas);
                                     cout << "\nImagem rotacionada 90 graus a direita!" << endl;
 
@@ -214,15 +219,18 @@ int main() {
                             cout << "\nVoltando ao menu principal..." << endl;
                             break;
                         default:
+                            // Opção inválida
                             cout << "Opcao invalida. Tente novamente." << endl;
                     }
                 }
                 break;
 
+                // Opção para encerrar o programa
             case 0:
                 cout << "Encerrando o programa..." << endl;
                 break;
 
+                // Opção inválida
             default:
                 cout << "Opcao invalida. Tente novamente." << endl;
                 break;
