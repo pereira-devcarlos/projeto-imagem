@@ -462,9 +462,9 @@ void espelharVertical(int** imagem, int linhas, int colunas) {
 
 // Função para negativar a imagem
 void negativarImagem(int** imagem, int linhas, int colunas, int maxValor) {
-    for (int i = 0; i < linhas; ++i) {
-        for (int j = 0; j < colunas; ++j) {
-            imagem[i][j] = maxValor - imagem[i][j];
+    for (int** ptrLinha = imagem; ptrLinha < imagem + linhas; ++ptrLinha) {
+        for (int* ptrColuna = *ptrLinha; ptrColuna < *ptrLinha + colunas; ++ptrColuna) {
+            *ptrColuna = maxValor - *ptrColuna;
         }
     }
 }
