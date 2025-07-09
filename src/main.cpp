@@ -446,13 +446,17 @@ void espelharHorizontal(int** imagem, int linhas, int colunas) {
 }
 
 // Função para espelhar verticalmente a imagem
-void espelharVertical(int**& imagem, int linhas, int colunas) {
-    for (int i = 0; i < linhas / 2; ++i) {
-        for (int j = 0; j < colunas; ++j) {
-            int temp = imagem[i][j];
-            imagem[i][j] = imagem[linhas - 1 - i][j];
-            imagem[linhas - 1 - i][j] = temp;
+void espelharVertical(int** imagem, int linhas, int colunas) {
+    int** ptrTopo = imagem;
+    int** ptrBase = imagem + linhas - 1;
+    while (ptrTopo < ptrBase) {
+        for (int* ptrCol = *ptrTopo, *ptrColBase = *ptrBase; ptrCol < *ptrTopo + colunas; ++ptrCol, ++ptrColBase) {
+            int temp = *ptrCol;
+            *ptrCol = *ptrColBase;
+            *ptrColBase = temp;
         }
+        ++ptrTopo;
+        --ptrBase;
     }
 }
 
