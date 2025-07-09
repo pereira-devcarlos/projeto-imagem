@@ -491,33 +491,25 @@ void iconizarImagem(int**& imagem, int& linhas, int& colunas, int tamanhoIcone) 
         for (int j = 0; j < tamanhoIcone; j++) {
             int soma = 0;
             int cont = 0;
-
             for (int x = 0; x < blocoL; x++) {
+                int** ptrLinhaOrig = imagem + (i * blocoL + x);
                 for (int y = 0; y < blocoC; y++) {
-                    int linhaOrig = i * blocoL + x;
-                    int colunaOrig = j * blocoC + y;
-
-                    // Verifica se está dentro da imagem original
-                    if (linhaOrig < linhas && colunaOrig < colunas) {
-                        soma += imagem[linhaOrig][colunaOrig];
+                    int* ptrColunaOrig = *ptrLinhaOrig + (j * blocoC + y);
+                    if ((i * blocoL + x) < linhas && (j * blocoC + y) < colunas) {
+                        soma += *ptrColunaOrig;
                         cont++;
                     }
                 }
             }
-
             novaImagem[i][j] = (cont > 0) ? (soma / cont) : 0;
         }
     }
 
-    // Libera a memória da imagem original
-    for (int i = 0; i < linhas; ++i) {
-        delete[] imagem[i];
+    for (int** ptrLinha = imagem; ptrLinha < imagem + linhas; ++ptrLinha) {
+        delete[] *ptrLinha;
     }
     delete[] imagem;
 
-    // Atualiza o ponteiro da imagem para apontar para a nova matriz do ícone
     imagem = novaImagem;
-
-    // Atualiza as dimensões da imagem
     linhas = colunas = tamanhoIcone;
 }
