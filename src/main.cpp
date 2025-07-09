@@ -361,12 +361,11 @@ void salvarImagem(int** imagem, int linhas, int colunas, int maxValor, const str
 
 // Função para clarar ou escurecer a imagem
 void ajustarBrilho(int** imagem, int linhas, int colunas, int ajuste) {
-    for (int i = 0; i < linhas; ++i) {
-        for (int j = 0; j < colunas; ++j) {
-            imagem[i][j] += ajuste;
-            // Garante que os valores estejam dentro do intervalo [0, maxValor]
-            if (imagem[i][j] < 0) imagem[i][j] = 0;
-            if (imagem[i][j] > 255) imagem[i][j] = 255; // Considerando maxValor como 255 para PGM
+    for (int** ptrLinha = imagem; ptrLinha < imagem + linhas; ++ptrLinha) {
+        for (int* ptrColuna = *ptrLinha; ptrColuna < *ptrLinha + colunas; ++ptrColuna) {
+            *ptrColuna += ajuste;
+            if (*ptrColuna < 0) *ptrColuna = 0;
+            if (*ptrColuna > 255) *ptrColuna = 255;
         }
     }
 }
@@ -432,12 +431,16 @@ void rotacionarEsquerda(int**& imagem, int& linhas, int& colunas) {
 }
 
 // Função para espelhar horizontalmente a imagem
-void espelharHorizontal(int**& imagem, int linhas, int colunas) {
-    for (int i = 0; i < linhas; ++i) {
-        for (int j = 0; j < colunas / 2; ++j) {
-            int temp = imagem[i][j];
-            imagem[i][j] = imagem[i][colunas - 1 - j];
-            imagem[i][colunas - 1 - j] = temp;
+void espelharHorizontal(int** imagem, int linhas, int colunas) {
+    for (int** ptrLinha = imagem; ptrLinha < imagem + linhas; ++ptrLinha) {
+        int* inicio = *ptrLinha;
+        int* fim = *ptrLinha + colunas - 1;
+        while (inicio < fim) {
+            int temp = *inicio;
+            *inicio = *fim;
+            *fim = temp;
+            ++inicio;
+            --fim;
         }
     }
 }
