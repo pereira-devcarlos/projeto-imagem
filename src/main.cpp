@@ -296,9 +296,9 @@ void carregarImagem(const string& nomeArquivo, int**& imagem, int& linhas, int& 
     imagem = alocarImagem(linhas, colunas);
 
     // Lê os pixels da imagem e armazena na matriz
-    for (int i = 0; i < linhas; ++i) {
-        for (int j = 0; j < colunas; ++j) {
-            arquivo >> imagem[i][j];
+    for (int** ptrLinha = imagem; ptrLinha < imagem + linhas; ++ptrLinha) {
+        for (int* ptrColuna = *ptrLinha; ptrColuna < *ptrLinha + colunas; ++ptrColuna) {
+            arquivo >> *ptrColuna;
         }
     }
 
