@@ -237,20 +237,19 @@ int main() {
     return 0;
 }
 
-// Aloca dinamicamente uma matriz de inteiros (imagem)
+// Função para alocar dinamicamente uma matriz de inteiros (imagem) usando ponteiros e for
 int** alocarImagem(int linhas, int colunas) {
     int** imagem = new int*[linhas];
-    for (int i = 0; i < linhas; ++i) {
-        imagem[i] = new int[colunas];
+    for (int** ptrLinha = imagem; ptrLinha < imagem + linhas; ++ptrLinha) {
+        *ptrLinha = new int[colunas];
     }
-    // Retorna um ponteiro para uma matriz de linhas x colunas
     return imagem;
 }
 
-// Libera a memória alocada para a matriz de inteiros (imagem)
+// Função para liberar a memória alocada para a matriz de inteiros (imagem) usando ponteiros e for
 void liberarImagem(int** imagem, int linhas) {
-    for (int i = 0; i < linhas; ++i) {
-        delete[] imagem[i];
+    for (int** ptrLinha = imagem; ptrLinha < imagem + linhas; ++ptrLinha) {
+        delete[] *ptrLinha;
     }
     delete[] imagem;
 }
@@ -265,14 +264,14 @@ void carregarImagem(const string& nomeArquivo, int**& imagem, int& linhas, int& 
     }
 
     string linha;
-    // Ler "P2" (identificador do formato PGM ASCII)
+    // Lê o identificador do formato PGM (deve ser "P2")
     getline(arquivo, linha);
     if (linha != "P2") {
         cout << "Formato PGM inválido (esperado P2)." << endl;
         return;
     }
 
-    // Ignora comentários e lê as dimensões
+    // Ignora comentários e lê as dimensões da imagem
     string temp;
     arquivo >> temp;
     while (temp[0] == '#') {
@@ -284,7 +283,7 @@ void carregarImagem(const string& nomeArquivo, int**& imagem, int& linhas, int& 
     colunas = stoi(temp);
     arquivo >> linhas;
 
-    // Ignora comentários e lê o valor máximo
+    // Ignora comentários e lê o valor máximo do pixel
     arquivo >> temp;
     while (temp[0] == '#') {
         getline(arquivo, temp);
@@ -295,7 +294,7 @@ void carregarImagem(const string& nomeArquivo, int**& imagem, int& linhas, int& 
     // Aloca a matriz imagem dinamicamente
     imagem = alocarImagem(linhas, colunas);
 
-    // Lê os pixels da imagem e armazena na matriz
+    // Lê os pixels da imagem e armazena na matriz usando ponteiros
     for (int** ptrLinha = imagem; ptrLinha < imagem + linhas; ++ptrLinha) {
         for (int* ptrColuna = *ptrLinha; ptrColuna < *ptrLinha + colunas; ++ptrColuna) {
             arquivo >> *ptrColuna;
@@ -305,7 +304,7 @@ void carregarImagem(const string& nomeArquivo, int**& imagem, int& linhas, int& 
     arquivo.close();
 }
 
-// Gera um nome único para o arquivo PGM, consultando nomes.txt
+// Função para gerar um nome único para o arquivo PGM, consultando nomes.txt
 string gerarNomeUnico(const string& base, const string& extensao, const string& registro) {
     int contador = 1;
     string nome;
@@ -328,7 +327,7 @@ string gerarNomeUnico(const string& base, const string& extensao, const string& 
 
 // Função para salvar uma imagem PGM (formato ASCII)
 void salvarImagem(int** imagem, int linhas, int colunas, int maxValor, const string& base, const string& extensao, const string& registro) {
-    // Gera nome único
+    // Gera nome único para o novo arquivo
     string nomeArquivo = gerarNomeUnico(base, extensao, registro);
 
     ofstream arquivo(nomeArquivo);
@@ -342,7 +341,7 @@ void salvarImagem(int** imagem, int linhas, int colunas, int maxValor, const str
     arquivo << colunas << " " << linhas << "\n";
     arquivo << maxValor << "\n";
 
-    // Escreve os pixels da imagem
+    // Escreve os pixels da imagem (usando índices para garantir a ordem)
     for (int i = 0; i < linhas; ++i) {
         for (int j = 0; j < colunas; ++j) {
             arquivo << imagem[i][j] << " ";
@@ -351,7 +350,7 @@ void salvarImagem(int** imagem, int linhas, int colunas, int maxValor, const str
     }
     arquivo.close();
 
-    // Registra o nome no arquivo de nomes
+    // Registra o nome do arquivo gerado em nomes.txt
     ofstream arq(registro, ios::app);
     arq << nomeArquivo << endl;
     arq.close();
@@ -359,8 +358,9 @@ void salvarImagem(int** imagem, int linhas, int colunas, int maxValor, const str
     cout << "Imagem salva como: " << nomeArquivo << endl;
 }
 
-// Função para clarar ou escurecer a imagem
+// Função para clarear ou escurecer a imagem
 void ajustarBrilho(int** imagem, int linhas, int colunas, int ajuste) {
+    // Percorre cada pixel usando ponteiros e ajusta o brilho
     for (int** ptrLinha = imagem; ptrLinha < imagem + linhas; ++ptrLinha) {
         for (int* ptrColuna = *ptrLinha; ptrColuna < *ptrLinha + colunas; ++ptrColuna) {
             *ptrColuna += ajuste;
@@ -372,12 +372,13 @@ void ajustarBrilho(int** imagem, int linhas, int colunas, int ajuste) {
 
 // Função para rotacionar a imagem 90 graus para a direita
 void rotacionarDireita(int**& imagem, int& linhas, int& colunas) {
-    // Cria nova matriz com dimensões invertidas
+    // Cria nova matriz com dimensões invertidas (colunas x linhas)
     int** novaImagem = new int*[colunas];
     for (int** ptrNovaLinha = novaImagem; ptrNovaLinha < novaImagem + colunas; ++ptrNovaLinha) {
         *ptrNovaLinha = new int[linhas];
     }
 
+    // Copia os pixels da imagem original para a nova matriz, rotacionando 90 graus à direita
     int i = 0;
     for (int** ptrLinha = imagem; ptrLinha < imagem + linhas; ++ptrLinha, ++i) {
         int j = 0;
@@ -394,20 +395,24 @@ void rotacionarDireita(int**& imagem, int& linhas, int& colunas) {
     }
     delete[] imagem;
 
+    // Atualiza o ponteiro da imagem para apontar para a nova matriz rotacionada
     imagem = novaImagem;
+
+    // Troca os valores de linhas e colunas, pois a imagem foi rotacionada
     int temp = linhas;
     linhas = colunas;
     colunas = temp;
 }
 
-// Função para rotacionar a imagem a 90 graus para a esquerda
+// Função para rotacionar a imagem 90 graus para a esquerda
 void rotacionarEsquerda(int**& imagem, int& linhas, int& colunas) {
-    // Cria nova matriz com dimensões invertidas
+    // Cria nova matriz com dimensões invertidas (colunas x linhas)
     int** novaImagem = new int*[colunas];
     for (int** ptrNovaLinha = novaImagem; ptrNovaLinha < novaImagem + colunas; ++ptrNovaLinha) {
         *ptrNovaLinha = new int[linhas];
     }
 
+    // Copia os pixels da imagem original para a nova matriz, rotacionando 90 graus à esquerda
     int i = 0;
     for (int** ptrLinha = imagem; ptrLinha < imagem + linhas; ++ptrLinha, ++i) {
         int j = 0;
@@ -424,7 +429,10 @@ void rotacionarEsquerda(int**& imagem, int& linhas, int& colunas) {
     }
     delete[] imagem;
 
+    // Atualiza o ponteiro da imagem para apontar para a nova matriz rotacionada
     imagem = novaImagem;
+
+    // Troca os valores de linhas e colunas, pois a imagem foi rotacionada
     int temp = linhas;
     linhas = colunas;
     colunas = temp;
@@ -432,6 +440,7 @@ void rotacionarEsquerda(int**& imagem, int& linhas, int& colunas) {
 
 // Função para espelhar horizontalmente a imagem
 void espelharHorizontal(int** imagem, int linhas, int colunas) {
+    // Para cada linha, troca os pixels das extremidades usando ponteiros
     for (int** ptrLinha = imagem; ptrLinha < imagem + linhas; ++ptrLinha) {
         int* inicio = *ptrLinha;
         int* fim = *ptrLinha + colunas - 1;
@@ -447,6 +456,7 @@ void espelharHorizontal(int** imagem, int linhas, int colunas) {
 
 // Função para espelhar verticalmente a imagem
 void espelharVertical(int** imagem, int linhas, int colunas) {
+    // Troca as linhas de cima com as de baixo usando ponteiros
     int** ptrTopo = imagem;
     int** ptrBase = imagem + linhas - 1;
     while (ptrTopo < ptrBase) {
@@ -460,8 +470,9 @@ void espelharVertical(int** imagem, int linhas, int colunas) {
     }
 }
 
-// Função para negativar a imagem
+// Função para negativar a imagem (inverter os tons de cinza)
 void negativarImagem(int** imagem, int linhas, int colunas, int maxValor) {
+    // Para cada pixel, subtrai seu valor do valor máximo
     for (int** ptrLinha = imagem; ptrLinha < imagem + linhas; ++ptrLinha) {
         for (int* ptrColuna = *ptrLinha; ptrColuna < *ptrLinha + colunas; ++ptrColuna) {
             *ptrColuna = maxValor - *ptrColuna;
@@ -469,8 +480,9 @@ void negativarImagem(int** imagem, int linhas, int colunas, int maxValor) {
     }
 }
 
-// Função para binarizar a imagem
+// Função para binarizar a imagem usando um limiar
 void binarizarImagem(int** imagem, int linhas, int colunas, int limiar) {
+    // Para cada pixel, define 255 se maior que o limiar, senão 0
     for (int** ptrLinha = imagem; ptrLinha < imagem + linhas; ++ptrLinha) {
         for (int* ptrColuna = *ptrLinha; ptrColuna < *ptrLinha + colunas; ++ptrColuna) {
             *ptrColuna = (*ptrColuna > limiar) ? 255 : 0;
@@ -478,15 +490,17 @@ void binarizarImagem(int** imagem, int linhas, int colunas, int limiar) {
     }
 }
 
-// Função para iconizar a imagem
+// Função para reduzir a imagem para um ícone de tamanho tamanhoIcone x tamanhoIcone
 void iconizarImagem(int**& imagem, int& linhas, int& colunas, int tamanhoIcone) {
     int blocoL = linhas / tamanhoIcone;
     int blocoC = colunas / tamanhoIcone;
 
+    // Aloca nova matriz para o ícone
     int** novaImagem = new int*[tamanhoIcone];
     for (int i = 0; i < tamanhoIcone; i++)
         novaImagem[i] = new int[tamanhoIcone];
 
+    // Para cada bloco da imagem original, calcula a média dos pixels e atribui ao ícone
     for (int i = 0; i < tamanhoIcone; i++) {
         for (int j = 0; j < tamanhoIcone; j++) {
             int soma = 0;
@@ -505,11 +519,15 @@ void iconizarImagem(int**& imagem, int& linhas, int& colunas, int tamanhoIcone) 
         }
     }
 
+    // Libera a memória da imagem original
     for (int** ptrLinha = imagem; ptrLinha < imagem + linhas; ++ptrLinha) {
         delete[] *ptrLinha;
     }
     delete[] imagem;
 
+    // Atualiza o ponteiro da imagem para apontar para a nova matriz do ícone
     imagem = novaImagem;
+
+    // Atualiza as dimensões da imagem
     linhas = colunas = tamanhoIcone;
 }
