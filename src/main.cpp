@@ -402,29 +402,29 @@ void rotacionarDireita(int**& imagem, int& linhas, int& colunas) {
 
 // Função para rotacionar a imagem a 90 graus para a esquerda
 void rotacionarEsquerda(int**& imagem, int& linhas, int& colunas) {
-    // Cria uma nova matriz com dimensões invertidas (colunas x linhas)
+    // Cria nova matriz com dimensões invertidas
     int** novaImagem = new int*[colunas];
-    for (int i = 0; i < colunas; ++i) {
-        novaImagem[i] = new int[linhas];
+    for (int** ptrNovaLinha = novaImagem; ptrNovaLinha < novaImagem + colunas; ++ptrNovaLinha) {
+        *ptrNovaLinha = new int[linhas];
     }
 
-    // Copia os pixels da imagem original para a nova matriz, rotacionando 90 graus à esquerda
-    for (int i = 0; i < linhas; ++i) {
-        for (int j = 0; j < colunas; ++j) {
-            novaImagem[colunas - 1 - j][i] = imagem[i][j];
+    int i = 0;
+    for (int** ptrLinha = imagem; ptrLinha < imagem + linhas; ++ptrLinha, ++i) {
+        int j = 0;
+        for (int* ptrColuna = *ptrLinha; ptrColuna < *ptrLinha + colunas; ++ptrColuna, ++j) {
+            int** ptrNovaLinha = novaImagem + (colunas - 1 - j);
+            int* ptrNovaColuna = *ptrNovaLinha + i;
+            *ptrNovaColuna = *ptrColuna;
         }
     }
 
     // Libera a memória da imagem original
-    for (int i = 0; i < linhas; ++i) {
-        delete[] imagem[i];
+    for (int** ptrLinha = imagem; ptrLinha < imagem + linhas; ++ptrLinha) {
+        delete[] *ptrLinha;
     }
     delete[] imagem;
 
-    // Atualiza o ponteiro da imagem para apontar para a nova matriz rotacionada
     imagem = novaImagem;
-
-    // Troca os valores de linhas e colunas usando variável auxiliar
     int temp = linhas;
     linhas = colunas;
     colunas = temp;
