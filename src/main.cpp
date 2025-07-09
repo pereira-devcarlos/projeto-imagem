@@ -470,14 +470,10 @@ void negativarImagem(int** imagem, int linhas, int colunas, int maxValor) {
 }
 
 // Função para binarizar a imagem
-void binarizarImagem(int**& imagem, int linhas, int colunas, int limiar) {
-    for (int i = 0; i < linhas; ++i) {
-        for (int j = 0; j < colunas; ++j) {
-            if (imagem[i][j] > limiar) {
-                imagem[i][j] = 255;
-            } else {
-                imagem[i][j] = 0;
-            }
+void binarizarImagem(int** imagem, int linhas, int colunas, int limiar) {
+    for (int** ptrLinha = imagem; ptrLinha < imagem + linhas; ++ptrLinha) {
+        for (int* ptrColuna = *ptrLinha; ptrColuna < *ptrLinha + colunas; ++ptrColuna) {
+            *ptrColuna = (*ptrColuna > limiar) ? 255 : 0;
         }
     }
 }
